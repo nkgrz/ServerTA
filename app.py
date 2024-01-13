@@ -90,28 +90,28 @@ def get_user_avatar(avatar_name):
     return send_from_directory(app.config['AVATAR_FOLDER'], avatar_name)
 
 
-@app.route('/api/upload_avatar', methods=['POST'])
-def upload_avatar():
-    try:
-        avatar = request.files['avatar']
-        if avatar:
-            user_email = 'example@example.com'  # Получите адрес электронной почты пользователя из сессии или запроса
-            avatar_filename = secure_filename(user_email + '_avatar.png')  # Создайте уникальное имя файла аватара
-            avatar.save(os.path.join(app.config['AVATAR_FOLDER'], avatar_filename))
+# @app.route('/api/upload_avatar', methods=['POST'])
+# def upload_avatar():
+#     try:
+#         avatar = request.files['avatar']
+#         if avatar:
+#             user_email = 'example@example.com'  # Получите адрес электронной почты пользователя из сессии или запроса
+#             avatar_filename = secure_filename(user_email + '_avatar.png')  # Создайте уникальное имя файла аватара
+#             avatar.save(os.path.join(app.config['AVATAR_FOLDER'], avatar_filename))
 
-            # Сохраняем имя файла аватара в базе данных для текущего пользователя
-            current_user.avatar = avatar_filename
-            db.session.commit()
+#             # Сохраняем имя файла аватара в базе данных для текущего пользователя
+#             current_user.avatar = avatar_filename
+#             db.session.commit()
 
-            return jsonify({'message': 'Avatar uploaded successfully'})
-        else:
-            # Если фото профиля не передано, используйте дефолтный аватар
-            default_avatar_filename = 'default_avatar.png'
-            current_user.avatar = default_avatar_filename
-            db.session.commit()
-            return jsonify({'message': 'Default avatar set'})
-    except Exception as e:
-        return jsonify({'error': str(e)})
+#             return jsonify({'message': 'Avatar uploaded successfully'})
+#         else:
+#             # Если фото профиля не передано, используйте дефолтный аватар
+#             default_avatar_filename = 'default_avatar.png'
+#             current_user.avatar = default_avatar_filename
+#             db.session.commit()
+#             return jsonify({'message': 'Default avatar set'})
+#     except Exception as e:
+#         return jsonify({'error': str(e)})
 
 
 with app.app_context():
